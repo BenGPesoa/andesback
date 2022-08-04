@@ -9,6 +9,6 @@ async function getUserByUsernameAndPassword(user, password) {
     } catch (error) {
         console.log(error);
     }
-}
+};
 
 module.exports = { getUserByUsernameAndPassword }
