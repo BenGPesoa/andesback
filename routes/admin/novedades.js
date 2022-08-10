@@ -42,6 +42,41 @@ router.post('/agregar', async (req, res, next) => {
   }
 });
 
+router.get('/eliminar/:id', async (req, res, next) => {
+  var id = req.params.id;
+  await novedadesModel.deleteNovedadById(id);
+  res.redirect('/admin/novedades')
+});
+
+router.get('/editar/:id', async (req, res, next) => {
+  let id = req.params.id;
+  let novedad = await novedadesModel.getNovedadById(id);
+  res.render('admin/editar', {
+    layout: 'admin/layout',
+    novedad
+  });
+});
+
+router.post('/editar', async (req, res, next) => {
+  try {
+    let obj = {
+      titulo: req.body.titulo,
+      subtitulo: req.body.subtitulo,
+      cuerpo: req.body.cuerpo
+    }
+    console.log(obj);
+
+    await novedadesModel.editarNovedadById(obj, req.body.id);
+    res.redirect('/admin/novedades');
+  }  catch (error) {
+    console.log(error)
+    res.render('admin/editar', {
+      layout: 'admin/layout',
+      error: true,
+      message: 'No se modifico el evento.'
+    })
+  }
+});
 
 
 module.exports = router;
